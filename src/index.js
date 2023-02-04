@@ -8,7 +8,7 @@ const gallery = document.querySelector('.gallery');
 const searchInput = document.querySelector('.search-input');
 const searchButton = document.querySelector('.submit-btn');
 const loadMoreButton = document.querySelector('.fetch-btn');
-isButtonVisible = false;
+const isButtonVisible = false;
 loadMoreButton.classList.add('hidden');
 let imagesLoaded = 40;
 let pagesLoaded = 0;
