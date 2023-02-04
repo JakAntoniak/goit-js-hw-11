@@ -12,6 +12,7 @@ const isButtonVisible = false;
 loadMoreButton.classList.add('hidden');
 let imagesLoaded = 40;
 let pagesLoaded = 0;
+let hits = 1;
 
 searchButton.addEventListener('click', handleSubmit);
 loadMoreButton.addEventListener('click', handleLoadMore);
