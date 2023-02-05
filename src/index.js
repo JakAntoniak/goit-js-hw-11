@@ -8,10 +8,10 @@ const gallery = document.querySelector('.gallery');
 const searchInput = document.querySelector('.search-input');
 const searchButton = document.querySelector('.submit-btn');
 const loadMoreButton = document.querySelector('.fetch-btn');
-const isButtonVisible = false;
 loadMoreButton.classList.add('hidden');
 let imagesLoaded = 0;
 let hits = 1;
+let pagesLoaded;
 
 searchButton.addEventListener('click', handleSubmit);
 loadMoreButton.addEventListener('click', handleLoadMore);
