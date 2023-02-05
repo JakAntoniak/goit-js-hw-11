@@ -10,7 +10,7 @@ const searchButton = document.querySelector('.submit-btn');
 const loadMoreButton = document.querySelector('.fetch-btn');
 const isButtonVisible = false;
 loadMoreButton.classList.add('hidden');
-let imagesLoaded = 40;
+let imagesLoaded = 0;
 let pagesLoaded = 0;
 let hits = 1;
 
@@ -29,17 +29,15 @@ async function getImages(input, page = 1, outcomes = 40) {
       per_page: outcomes,
     },
   });
-  hits = response.data.totalHits;
-  if (imagesLoaded > 1) {
-    loadMoreButtonPopup();
-  }
 
+  hits = response.data.totalHits;
+  imagesLoaded += 40;
   return response.data;
 }
 
 function handleSubmit(event) {
   event.preventDefault();
-  imagesLoaded = 40;
+  imagesLoaded = 0;
   getImages(searchInput.value).then(results => {
     if (results.hits.length === 0) {
       Notiflix.Notify.failure(
@@ -52,25 +50,23 @@ function handleSubmit(event) {
     } else {
       renderCards(results.hits);
       Notiflix.Notify.success(`Hooray! We found ${results.totalHits} images.`);
+      loadMoreButton.classList.remove('hidden');
     }
   });
 }
 
 function handleLoadMore() {
-  imagesLoaded += 40;
-  getImages(searchInput.value, pagesLoaded, imagesLoaded).then(results => {
-    if (imagesLoaded >= hits) {
-      Notiflix.Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-      return;
-    } else {
-      pagesLoaded += 1;
-      getImages(searchInput.value, pagesLoaded).then(results => {
-        renderCards(results.hits, false);
-      });
-    }
-    console.log(imagesLoaded);
+  getImages(searchInput.value, pagesLoaded);
+  if (imagesLoaded >= hits) {
+    loadMoreButton.classList.add('hidden');
+    Notiflix.Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+    return;
+  }
+  pagesLoaded += 1;
+  getImages(searchInput.value, pagesLoaded).then(results => {
+    renderCards(results.hits, false);
   });
 }
 
