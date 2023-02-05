@@ -11,7 +11,6 @@ const loadMoreButton = document.querySelector('.fetch-btn');
 const isButtonVisible = false;
 loadMoreButton.classList.add('hidden');
 let imagesLoaded = 0;
-let pagesLoaded = 0;
 let hits = 1;
 
 searchButton.addEventListener('click', handleSubmit);
@@ -38,6 +37,7 @@ async function getImages(input, page = 1, outcomes = 40) {
 function handleSubmit(event) {
   event.preventDefault();
   imagesLoaded = 0;
+  pagesLoaded = 1;
   getImages(searchInput.value).then(results => {
     if (results.hits.length === 0) {
       Notiflix.Notify.failure(
@@ -56,7 +56,6 @@ function handleSubmit(event) {
 }
 
 function handleLoadMore() {
-  getImages(searchInput.value, pagesLoaded);
   if (imagesLoaded >= hits) {
     loadMoreButton.classList.add('hidden');
     Notiflix.Notify.failure(
@@ -70,7 +69,6 @@ function handleLoadMore() {
   });
 }
 
-pagesLoaded = 1;
 function renderCards(hits, clear = true) {
   if (clear) {
     gallery.innerHTML = '';
@@ -128,11 +126,4 @@ function renderCards(hits, clear = true) {
     });
   }
   lightbox.refresh();
-}
-
-function loadMoreButtonPopup() {
-  if (isButtonVisible) {
-    return;
-  }
-  loadMoreButton.classList.remove('hidden');
 }
